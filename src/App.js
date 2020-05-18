@@ -11,22 +11,21 @@ const App = () => {
   const [user, setUser] = useState({});
 
   useEffect(() => {
-    return () => {
-      axios
-        .get("http://localhost:3001/logged_in", { withCredentials: true })
-        .then((response) => {
-          if (response.data.logged_in) {
-            handleLogin(response);
-          } else {
-            handleLogout();
-          }
-        })
-        .catch((error) => console.log("api errors:", error));
-    };
-  });
+    axios
+      .get("http://localhost:3001/logged_in", { withCredentials: true })
+      .then((response) => {
+        console.log(response);
+        if (response.data.logged_in) {
+          handleLogin(response.data);
+        } else {
+          handleLogout();
+        }
+      })
+      .catch((error) => console.log("api errors:", error));
+  }, []);
 
   const handleLogin = (data) => {
-    setIsLoggedIn();
+    setIsLoggedIn(true);
     setUser(data.user);
   };
 
@@ -47,7 +46,14 @@ const App = () => {
           <Route
             exact
             path="/"
-            render={(props) => <Home {...props} loggedInStatus={isLoggedIn} />}
+            render={(props) => (
+              <Home
+                {...props}
+                loggedInStatus={isLoggedIn}
+                handleLogout={handleLogout}
+                user={user}
+              />
+            )}
           />
           <Route
             exact

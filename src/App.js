@@ -1,26 +1,80 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { BrowserRouter, Switch, Route } from "react-router-dom";
 
-function App() {
+import Home from "./components/Home";
+import Login from "./components/Login";
+import Signup from "./components/Signup";
+
+const App = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [user, setUser] = useState({});
+
+  useEffect(() => {
+    return () => {
+      axios
+        .get("http://localhost:3001/logged_in", { withCredentials: true })
+        .then((response) => {
+          if (response.data.logged_in) {
+            handleLogin(response);
+          } else {
+            handleLogout();
+          }
+        })
+        .catch((error) => console.log("api errors:", error));
+    };
+  });
+
+  const handleLogin = (data) => {
+    setIsLoggedIn();
+    setUser(data.user);
+  };
+
+  const handleLogout = () => {
+    axios
+      .delete("http://localhost:3001/logout", { withCredentials: true })
+      .then((response) => {
+        setIsLoggedIn(false);
+        setUser({});
+      })
+      .catch((error) => console.log(error));
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <BrowserRouter>
+        <Switch>
+          <Route
+            exact
+            path="/"
+            render={(props) => <Home {...props} loggedInStatus={isLoggedIn} />}
+          />
+          <Route
+            exact
+            path="/login"
+            render={(props) => (
+              <Login
+                {...props}
+                handleLogin={handleLogin}
+                loggedInStatus={isLoggedIn}
+              />
+            )}
+          />
+          <Route
+            exact
+            path="/signup"
+            render={(props) => (
+              <Signup
+                {...props}
+                handleLogin={handleLogin}
+                loggedInStatus={isLoggedIn}
+              />
+            )}
+          />
+        </Switch>
+      </BrowserRouter>
     </div>
   );
-}
+};
 
 export default App;

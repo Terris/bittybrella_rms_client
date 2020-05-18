@@ -1,56 +1,28 @@
-import React, { useState } from "react";
-import axios from "axios";
-import { Link, useHistory } from "react-router-dom";
+import React, { useState, useContext, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { AuthContext } from "../store/AuthContext";
 
 const Login = ({ handleLogin }) => {
-  const history = useHistory();
+  const { auth, login, checkLogin } = useContext(AuthContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [errors, setErrors] = useState("");
+
+  useEffect(() => {
+    checkLogin();
+  }, []);
 
   const handleSubmit = (event) => {
     event.preventDefault();
-
-    let user = {
-      email: email,
-      password: password,
-    };
-
-    axios
-      .post("http://localhost:3001/login", { user }, { withCredentials: true })
-      .then((response) => {
-        if (response.data.logged_in) {
-          handleLogin(response.data);
-          redirect();
-        } else {
-          setErrors({
-            errors: response.data.errors,
-          });
-        }
-      })
-      .catch((error) => console.log("api errors:", error));
-  };
-
-  const redirect = () => {
-    history.push("/");
-  };
-
-  const handleErrors = () => {
-    return (
-      <div>
-        <ul>
-          {errors.map((error) => {
-            return <li key={error}>{error}</li>;
-          })}
-        </ul>
-      </div>
-    );
+    login(email, password);
   };
 
   return (
     <div>
       <h1>Log In</h1>
-      <div>{errors ? handleErrors() : null}</div>
+      {auth.errors &&
+        auth.errors.map((error) => {
+          return <li key={error}>{error}</li>;
+        })}
       <form onSubmit={handleSubmit}>
         <div className="field">
           <input

@@ -1,19 +1,13 @@
-import React from "react";
-import axios from "axios";
-import { Link, useHistory } from "react-router-dom";
+import React, { useContext, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { AuthContext } from "../store/AuthContext";
 
-const Home = ({ loggedInStatus, handleLogout }) => {
-  const history = useHistory();
+const Home = () => {
+  const { auth, logout, checkLogin } = useContext(AuthContext);
 
-  const handleClick = () => {
-    axios
-      .delete("http://localhost:3001/logout", { withCredentials: true })
-      .then((response) => {
-        handleLogout();
-        history.push("/");
-      })
-      .catch((error) => console.log(error));
-  };
+  useEffect(() => {
+    checkLogin();
+  }, []);
 
   return (
     <div>
@@ -21,8 +15,8 @@ const Home = ({ loggedInStatus, handleLogout }) => {
       <br></br>
       <Link to="/signup">Sign Up</Link>
       <br></br>
-      {loggedInStatus ? (
-        <Link to="/logout" onClick={handleClick}>
+      {auth.isLoggedIn ? (
+        <Link to="/" onClick={logout}>
           Log Out
         </Link>
       ) : null}

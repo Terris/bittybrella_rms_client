@@ -1,11 +1,11 @@
-import React, { useReducer, createContext } from "react";
+import React, { useReducer, createContext, useEffect } from "react";
 import AuthReducer from "./AuthReducer";
 import axios from "axios";
 
 const initialState = {
   loading: true,
   isLoggedIn: false,
-  user: {},
+  user: null,
   errors: null,
 };
 
@@ -13,6 +13,10 @@ export const AuthContext = createContext(initialState);
 
 export const AuthProvider = ({ children }) => {
   const [state, dispatch] = useReducer(AuthReducer, initialState);
+
+  useEffect(() => {
+    checkLogin();
+  }, []);
 
   // ACTIONS
   async function login(email, password) {

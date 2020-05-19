@@ -1,15 +1,18 @@
 import React, { useState, useContext, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { AuthContext } from "../store/AuthContext";
 
 const Login = ({ handleLogin }) => {
-  const { auth, login, checkLogin } = useContext(AuthContext);
+  const history = useHistory();
+  const { auth, login } = useContext(AuthContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   useEffect(() => {
-    checkLogin();
-  }, []);
+    if (auth.user) {
+      history.push("/");
+    }
+  }, [auth, history]);
 
   const handleSubmit = (event) => {
     event.preventDefault();

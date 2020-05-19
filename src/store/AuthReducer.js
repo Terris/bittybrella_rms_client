@@ -6,6 +6,7 @@ export default (state, action) => {
         loading: false,
         isLoggedIn: action.payload.isLoggedIn,
         user: action.payload.user,
+        errors: action.payload.errors,
       };
     case "LOGIN":
       return {
@@ -13,13 +14,15 @@ export default (state, action) => {
         loading: false,
         isLoggedIn: action.payload.logged_in,
         user: action.payload.user,
+        errors: action.payload.errors,
       };
     case "LOGOUT":
       return {
         ...state,
         loading: false,
         isLoggedIn: false,
-        user: {},
+        user: null,
+        errors: null,
       };
     default:
       return state;

@@ -1,0 +1,14 @@
+.cart {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 360px;
+  background: rgb(44, 45, 49);
+  background: linear-gradient(
+    0deg,
+    rgba(44, 45, 49, 1) 0%,
+    rgba(76, 79, 85, 1) 100%
+  );
+  color: #fff;
+}

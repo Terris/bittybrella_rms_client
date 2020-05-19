@@ -1,25 +1,9 @@
-import React, { useContext, useEffect } from "react";
-import { Link } from "react-router-dom";
-import { AuthContext } from "../store/AuthContext";
+import React from "react";
 
 const Home = () => {
-  const { auth, logout, checkLogin } = useContext(AuthContext);
-
-  useEffect(() => {
-    checkLogin();
-  }, []);
-
   return (
     <div>
-      <Link to="/login">Log In</Link>
-      <br></br>
-      <Link to="/signup">Sign Up</Link>
-      <br></br>
-      {auth.isLoggedIn ? (
-        <Link to="/" onClick={logout}>
-          Log Out
-        </Link>
-      ) : null}
+      <h1>Home</h1>
     </div>
   );
 };

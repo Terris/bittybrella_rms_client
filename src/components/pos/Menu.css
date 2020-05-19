@@ -1,0 +1,28 @@
+.menu {
+  display: flex;
+  flex-wrap: wrap;
+  padding-right: 260px;
+}
+
+.menu-item {
+  width: 200px;
+  height: 200px;
+  background: #fff;
+  border-radius: 6px;
+  margin: 20px;
+  cursor: pointer;
+  box-shadow: 1px 1px 5px 0px rgba(0, 0, 0, 0.02);
+  transition: all 0.2s ease;
+}
+
+.menu-item:hover {
+  background: #ececec;
+}
+
+.menu-item:active {
+  background: #b6e8d9;
+}
+
+.menu-item-title {
+  border-bottom: 1px solid #00000014;
+}

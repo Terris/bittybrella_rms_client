@@ -1,0 +1,13 @@
+.navigation {
+  background: #fff;
+  display: flex;
+}
+
+.navigation a {
+  display: inline-block;
+  padding: 20px;
+}
+
+.navigation a.logo {
+  font-weight: 700;
+}

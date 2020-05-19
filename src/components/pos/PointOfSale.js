@@ -1,14 +1,14 @@
 import React from "react";
+import { POSProvider } from "../../store/POSContext";
 import Menu from "./Menu";
-import Cart from "./Cart";
+import Ticket from "./Ticket";
 
 const PointOfSale = () => {
   return (
-    <>
-      <h1>Point of Sale</h1>
+    <POSProvider>
       <Menu />
-      <Cart />
-    </>
+      <Ticket />
+    </POSProvider>
   );
 };
 

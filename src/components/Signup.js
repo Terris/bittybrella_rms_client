@@ -1,99 +1,67 @@
-import React, { Component } from "react";
-import axios from "axios";
-class Signup extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      email: "",
-      password: "",
-      password_confirmation: "",
-      errors: "",
-    };
-  }
-  handleChange = (event) => {
-    const { name, value } = event.target;
-    this.setState({
-      [name]: value,
-    });
-  };
-  handleSubmit = (event) => {
+import React, { useState, useEffect, useContext } from "react";
+import { useHistory } from "react-router-dom";
+import { AuthContext } from "../store/AuthContext";
+
+const Signup = () => {
+  const history = useHistory();
+  const { auth, signup } = useContext(AuthContext);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [passwordConfirmation, setPasswordConfirmation] = useState("");
+
+  useEffect(() => {
+    if (auth.user) {
+      history.push("/");
+    }
+  }, [auth, history]);
+
+  const handleSubmit = (event) => {
     event.preventDefault();
-    const { email, password, password_confirmation } = this.state;
-    let user = {
-      email: email,
-      password: password,
-      password_confirmation: password_confirmation,
-    };
-    axios
-      .post("http://localhost:3001/users", { user }, { withCredentials: true })
-      .then((response) => {
-        if (response.data.status === "created") {
-          this.props.handleLogin(response.data);
-          this.redirect();
-        } else {
-          this.setState({
-            errors: response.data.errors,
-          });
-        }
-      })
-      .catch((error) => console.log("api errors:", error));
+    signup(email, password, passwordConfirmation);
   };
-  redirect = () => {
-    this.props.history.push("/");
-  };
-  handleErrors = () => {
-    return (
-      <div>
-        <ul>
-          {this.state.errors.map((error) => {
-            return <li key={error}>{error}</li>;
-          })}
-        </ul>
-      </div>
-    );
-  };
-  render() {
-    const { email, password, password_confirmation } = this.state;
-    return (
-      <div>
-        <h1>Sign Up</h1>
-        <form onSubmit={this.handleSubmit}>
-          <div className="field">
-            <input
-              placeholder="email"
-              type="text"
-              name="email"
-              value={email}
-              onChange={this.handleChange}
-            />
-          </div>
-          <div className="field">
-            <input
-              placeholder="password"
-              type="password"
-              name="password"
-              value={password}
-              onChange={this.handleChange}
-            />
-          </div>
-          <div className="field">
-            <input
-              placeholder="password confirmation"
-              type="password"
-              name="password_confirmation"
-              value={password_confirmation}
-              onChange={this.handleChange}
-            />
-          </div>
-          <div className="field">
-            <button placeholder="submit" type="submit" className="btn">
-              Sign Up
-            </button>
-          </div>
-        </form>
-        <div>{this.state.errors ? this.handleErrors() : null}</div>
-      </div>
-    );
-  }
-}
+
+  return (
+    <div>
+      <h1>Sign Up</h1>
+      {auth.errors &&
+        auth.errors.map((error) => {
+          return <li key={error}>{error}</li>;
+        })}
+      <form onSubmit={handleSubmit}>
+        <div className="field">
+          <input
+            placeholder="email"
+            type="text"
+            name="email"
+            value={email}
+            onChange={(e) => setEmail(e.currentTarget.value)}
+          />
+        </div>
+        <div className="field">
+          <input
+            placeholder="password"
+            type="password"
+            name="password"
+            value={password}
+            onChange={(e) => setPassword(e.currentTarget.value)}
+          />
+        </div>
+        <div className="field">
+          <input
+            placeholder="password confirmation"
+            type="password"
+            name="passwordConfirmation"
+            value={passwordConfirmation}
+            onChange={(e) => setPasswordConfirmation(e.currentTarget.value)}
+          />
+        </div>
+        <div className="field">
+          <button placeholder="submit" type="submit" className="btn">
+            Sign Up
+          </button>
+        </div>
+      </form>
+    </div>
+  );
+};
 export default Signup;

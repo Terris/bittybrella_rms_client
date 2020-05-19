@@ -1,18 +1,19 @@
 .menu {
   display: flex;
   flex-wrap: wrap;
-  padding-right: 260px;
+  padding-right: 360px;
 }
 
 .menu-item {
   width: 200px;
-  height: 200px;
+  height: 160px;
   background: #fff;
   border-radius: 6px;
   margin: 20px;
   cursor: pointer;
   box-shadow: 1px 1px 5px 0px rgba(0, 0, 0, 0.02);
-  transition: all 0.2s ease;
+  transition: background 0.2s ease;
+  color: #716c67;
 }
 
 .menu-item:hover {
@@ -20,7 +21,7 @@
 }
 
 .menu-item:active {
-  background: #b6e8d9;
+  background: #d1e8d4;
 }
 
 .menu-item-title {

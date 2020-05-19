@@ -1,5 +1,13 @@
 export default (state, action) => {
   switch (action.type) {
+    case "SIGNUP":
+      return {
+        ...state,
+        loading: false,
+        isLoggedIn: action.payload.logged_in,
+        user: action.payload.user,
+        errors: action.payload.errors,
+      };
     case "CHECK_LOGIN":
       return {
         ...state,

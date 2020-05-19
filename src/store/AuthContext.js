@@ -19,20 +19,22 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   // ACTIONS
-  async function login(email, password) {
+
+  async function signup(email, password, passwordConfirmation) {
     const user = {
       email,
       password,
+      passwordConfirmation,
     };
 
     try {
       const res = await axios.post(
-        "http://localhost:3001/login",
+        "http://localhost:3001/users",
         { user },
         { withCredentials: true }
       );
       dispatch({
-        type: "LOGIN",
+        type: "SIGNUP",
         payload: res.data,
       });
     } catch (err) {
@@ -70,7 +72,30 @@ export const AuthProvider = ({ children }) => {
     }
   }
 
-  // sign up
+  async function login(email, password) {
+    const user = {
+      email,
+      password,
+    };
+
+    try {
+      const res = await axios.post(
+        "http://localhost:3001/login",
+        { user },
+        { withCredentials: true }
+      );
+      dispatch({
+        type: "LOGIN",
+        payload: res.data,
+      });
+    } catch (err) {
+      dispatch({
+        type: "AUTH_ERROR",
+        payload: err,
+      });
+    }
+  }
+
   async function logout() {
     try {
       const res = await axios.delete("http://localhost:3001/logout", {
@@ -87,6 +112,7 @@ export const AuthProvider = ({ children }) => {
     <AuthContext.Provider
       value={{
         auth: state,
+        signup,
         checkLogin,
         login,
         logout,

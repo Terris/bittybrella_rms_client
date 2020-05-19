@@ -1,8 +1,9 @@
 import React from "react";
+import MenuItem from "./MenuItem";
 import "./Menu.css";
 
 const MENU_ITEMS = [
-  { id: 0, title: "Drip Coffee" },
+  { id: 0, title: "Drip" },
   { id: 1, title: "Espresso" },
   { id: 2, title: "Latte" },
   { id: 3, title: "Mocha" },
@@ -13,11 +14,8 @@ const Menu = () => {
   return (
     <div className="menu">
       {MENU_ITEMS &&
-        MENU_ITEMS.map((item) => (
-          <div className="menu-item" key={item.id}>
-            <h3 className="menu-item-title">{item.title}</h3>
-          </div>
-        ))}
+        MENU_ITEMS.map((item) => <MenuItem key={item.id} item={item} />)}
+      <hr />
     </div>
   );
 };
